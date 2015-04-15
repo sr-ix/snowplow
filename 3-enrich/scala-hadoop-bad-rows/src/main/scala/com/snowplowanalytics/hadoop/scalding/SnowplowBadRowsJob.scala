@@ -27,8 +27,17 @@ class JsonLine(p: String, fields: Fields) extends StandardJsonLine(p, fields, Si
   override val transformInTest = true
 }
 
+object SnowplowBadRowsJob {
+  // Strip out ev_va's which will break Enrich
+  def fixupEventValue(line: String): String =
+    line.replaceAll("&ev_va=undefined", "")
+}
+
+import SnowplowBadRowsJob._
 class SnowplowBadRowsJob(args : Args) extends Job(args) {
   JsonLine(args("input"), ('line, 'errors)).read
-  	.project('line)
+    .mapTo(('line) -> 'fixed) { l: (String) =>
+      fixupEventValue(l)
+    }
   	.write(Tsv(args("output")))
 }

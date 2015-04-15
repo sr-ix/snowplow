@@ -18,6 +18,10 @@ Run this job using the [Amazon Ruby EMR client] [emr-client]:
 
 Replace the `{{...}}` placeholders above with the appropriate bucket paths.
 
+## Building
+
+    guest$ sbt assembly
+
 ## Copyright and license
 
 Copyright 2014 Snowplow Analytics Ltd, with significant portions copyright 2012 Twitter, Inc.
