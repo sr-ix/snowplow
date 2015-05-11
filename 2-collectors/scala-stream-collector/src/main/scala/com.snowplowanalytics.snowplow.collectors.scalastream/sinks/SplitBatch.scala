@@ -42,7 +42,11 @@ object SplitBatch {
       acc: List[List[String]],
       failedBigEvents: List[String]): SplitBatch = l match {
 
-      case Nil => SplitBatch(currentBatch :: acc, failedBigEvents)
+      case Nil => currentBatch match {
+        case Nil => SplitBatch(acc, failedBigEvents)
+        case nonemptyBatch => SplitBatch(nonemptyBatch :: acc, failedBigEvents)
+      }
+
       case h :: t => {
         val headSize = ByteBuffer.wrap(h.getBytes).capacity
         if (headSize > maximum) {
@@ -54,6 +58,7 @@ object SplitBatch {
         }
       }
     }
+
     iterbatch(input, Nil, 0, Nil, Nil)
   }
 }
