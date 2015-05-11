@@ -93,7 +93,7 @@ object KinesisSink {
  * Kinesis Sink for the Scala collector.
  */
 class KinesisSink private (config: CollectorConfig) extends AbstractSink {
-  private lazy val log = LoggerFactory.getLogger(getClass())
+
   import log.{error, debug, info, trace}
 
   val BackoffTime = 3000L
